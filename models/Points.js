@@ -4,6 +4,14 @@ const PointSchema = new mongoose.Schema({
 	points: {
 		type: Number,
 		required: [true, 'Please set point amount']
+	},
+	date: {
+        type: Date,
+        required: [true]
+    },
+	signature: {
+		type: String,
+		required: [true, 'Please provide a signature']
 	}
 })
 

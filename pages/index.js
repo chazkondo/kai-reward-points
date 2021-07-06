@@ -14,6 +14,9 @@ export default function Home() {
 
   const [numberDiv, setNumberDiv] = useState('none')
   const [numberValue, setNumberValueState] = useState()
+  const [passwordIsDisabled, disablePasswordInput] = useState(false)
+
+  const [isBlacklisted, setIsBlacklisted] = useState(false)
 
   useEffect(()=>{
     let mounted = true;
@@ -45,21 +48,50 @@ export default function Home() {
   },[pointsUpdated])
 
   useEffect(()=>{
-    if (passwordValue === 'kaikaidoodoo') {
-      alert('Success')
-      setNumberDiv('flex')
-      setPasswordDiv('none')
-      setPasswordValueState('')
+    if (passwordValue.length === 15) {
+    disablePasswordInput(true)
+    axios
+      .post(`/api/validate`, {
+        password: passwordValue,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          setNumberDiv('flex')
+          setPasswordDiv('none')
+          disablePasswordInput(false)
+        } else {
+          if (res.data.blacklist) {
+            setIsBlacklisted(true);
+            alert('Blacklisted')
+          } else {
+            alert('Incorrect Password')
+            disablePasswordInput(false)
+          }
+        }
+      })
+      .catch((err) => {
+        alert('Sorry an error occurred.')
+        console.log(err, 'which err?')
+        disablePasswordInput(false)
+      })
     }
   },[passwordValue])
+
+  useEffect(()=>{
+    if (isBlacklisted) {
+      setPasswordDiv('none')
+      setNumberDiv('none')
+    }
+  }, [isBlacklisted])
 
   function addPoints(body) {
     setButtonLock(true)
     axios
       .post(`/api/points`, {
-        points: body
+        points: body,
+        password: passwordValue,
       })
-      .then((res) => {
+      .then(() => {
         updatePoints(previous=>previous+1)
         setButtonLock(false)
       })
@@ -71,7 +103,11 @@ export default function Home() {
   }
 
   function showPasswordDiv() {
-    setPasswordDiv('flex')
+    if (!isBlacklisted) {
+      setPasswordDiv('flex')
+    } else {
+      alert('Please contact website admin for assistance')
+    }
   }
   
   function setPasswordValue(e) {
@@ -79,7 +115,7 @@ export default function Home() {
   }
 
   function setNumberValue(target) {
-      setNumberValueState(target)
+    setNumberValueState(target)
   }
 
   function handleSubmit(num, key) {
@@ -91,6 +127,7 @@ export default function Home() {
         } else {
           addPoints(parsed);
           setNumberDiv('none')
+          setPasswordValueState('')
         }
       } else {
         alert('Invalid input')
@@ -126,9 +163,9 @@ export default function Home() {
 
       </main>
 
-      <div style={{display: passwordDiv}} className={styles.modal}>
-        <input autoFocus type="password" placeholder={'Enter Password'} onChange={(e) => setPasswordValue(e.target.value)} value={passwordValue}/>
-      </div>
+      {passwordDiv !== 'none' ? <div style={{display: passwordDiv}} className={styles.modal}>
+        <input autoFocus type="password" placeholder={'Enter Password'} onChange={(e) => setPasswordValue(e.target.value)} value={passwordValue} disabled={passwordIsDisabled} />
+      </div> : null}
 
       {numberDiv !== 'none' ? <div style={{display: numberDiv}} className={styles.modal}>
         <input autoFocus placeholder={'Enter Number'} type="number" step="1" onChange={(e) => setNumberValue(e.target.value)} onKeyDown={(e)=>handleSubmit(numberValue, e.key)}/>
