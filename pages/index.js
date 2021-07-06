@@ -115,7 +115,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Kai's Reward Points
+          Kai&apos;s Reward Points
         </h1>
 
         <h2>Points: {points}</h2>
