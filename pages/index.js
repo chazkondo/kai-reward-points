@@ -12,6 +12,9 @@ export default function Home() {
   const [pointsUpdated, updatePoints] = useState(0)
   const [passwordValue, setPasswordValueState] = useState('')
 
+  const [numberDiv, setNumberDiv] = useState('none')
+  const [numberValue, setNumberValueState] = useState()
+
   useEffect(()=>{
     let mounted = true;
     if (mounted) {
@@ -44,7 +47,7 @@ export default function Home() {
   useEffect(()=>{
     if (passwordValue === 'kaikaidoodoo') {
       alert('Success')
-      addPoints(20)
+      setNumberDiv('flex')
       setPasswordDiv('none')
       setPasswordValueState('')
     }
@@ -75,6 +78,33 @@ export default function Home() {
     setPasswordValueState(e)
   }
 
+  function setNumberValue(target) {
+      setNumberValueState(target)
+  }
+
+  function handleSubmit(num, key) {
+    function validate() {
+      const parsed = parseFloat(num)
+      if (Number.isInteger(parsed)) {
+        if (parsed > 1000 || parsed < -1000) {
+          alert('Invalid range')
+        } else {
+          addPoints(parsed);
+          setNumberDiv('none')
+        }
+      } else {
+        alert('Invalid input')
+      }
+    }
+    if (key) {
+      if (key === 'Enter') {
+        validate()
+      }
+    } else {
+      validate()
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -91,14 +121,21 @@ export default function Home() {
         <h2>Points: {points}</h2>
 
         <button className={styles.description} onClick={()=>showPasswordDiv()} disabled={lock}>
-          Add Points
+          Add/Subtract Points
         </button>
 
       </main>
 
       <div style={{display: passwordDiv}} className={styles.modal}>
-        <input autoFocus placeholder={'hi'} onChange={(e) => setPasswordValue(e.target.value)} value={passwordValue}/>
+        <input autoFocus type="password" placeholder={'Enter Password'} onChange={(e) => setPasswordValue(e.target.value)} value={passwordValue}/>
       </div>
+
+      {numberDiv !== 'none' ? <div style={{display: numberDiv}} className={styles.modal}>
+        <input autoFocus placeholder={'Enter Number'} type="number" step="1" onChange={(e) => setNumberValue(e.target.value)} onKeyDown={(e)=>handleSubmit(numberValue, e.key)}/>
+        <button onClick={()=>handleSubmit(numberValue)}>
+            Submit
+        </button>
+      </div> : null}
 
     </div>
   )
