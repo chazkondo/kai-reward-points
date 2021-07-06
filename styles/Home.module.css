@@ -6,6 +6,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  z-index: 1;
 }
 
 .main {
@@ -118,4 +119,18 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+.modal {
+  position: absolute;
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background-color: white;
 }
