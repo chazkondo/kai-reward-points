@@ -16,6 +16,7 @@ export default function Home() {
   const [numberDiv, setNumberDiv] = useState('none')
   const [numberValue, setNumberValueState] = useState()
   const [passwordIsDisabled, disablePasswordInput] = useState(false)
+  const [starArr, setStarArr] = useState([])
 
   const [isBlacklisted, setIsBlacklisted] = useState(false)
 
@@ -37,6 +38,7 @@ export default function Home() {
             })
   
             setPoints(total.points)
+            setStarArr([...Array(Math.floor(total.points/100))])
           }
       })
       .catch((err) => {
@@ -160,7 +162,9 @@ export default function Home() {
           Kai&apos;s Reward Points
         </h1>
 
-        <h2>Points: {points}</h2>
+        <h2 className={styles.points}>Points: {points}</h2>
+
+        <p className={styles.stars}>Kai Stars: {starArr.map(()=><span>⭐️</span>)}</p>
 
         <button className={styles.description} onClick={()=>showPasswordDiv()} disabled={lock}>
           Add/Subtract Points

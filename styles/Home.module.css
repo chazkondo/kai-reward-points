@@ -134,3 +134,13 @@
   z-index: 1;
   background-color: white;
 }
+
+.points {
+  margin-bottom: 10px;
+}
+
+.stars {
+  margin-top: 0;
+  margin-bottom: 20px;
+  letter-spacing: 1.1;
+}
