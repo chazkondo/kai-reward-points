@@ -38,7 +38,7 @@ export default function Home() {
             })
   
             setPoints(total.points)
-            setStarArr([...Array(Math.floor(total.points/100))])
+            setStarArr([...Array(Math.floor(total.points/200))])
           }
       })
       .catch((err) => {
