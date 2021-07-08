@@ -164,7 +164,8 @@ export default function Home() {
 
         <h2 className={styles.points}>Points: {points}</h2>
 
-        <p className={styles.stars}>Kai Stars: {starArr.map(()=><span>⭐️</span>)}</p>
+        <p className={styles.stars}>{starArr.map((e, i)=><div key={i} style={{display: 'inline-block'}}>⭐️</div>)}</p>
+        <p className={styles.starsNum}>Kai Stars: {starArr.length}</p>
 
         <button className={styles.description} onClick={()=>showPasswordDiv()} disabled={lock}>
           Add/Subtract Points

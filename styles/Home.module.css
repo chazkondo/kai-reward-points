@@ -141,6 +141,11 @@
 
 .stars {
   margin-top: 0;
+  max-width: 60vw;
+}
+
+.starsNum {
+  margin-top: 0;
   margin-bottom: 20px;
   letter-spacing: 1.1;
 }
