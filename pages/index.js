@@ -11,6 +11,7 @@ export default function Home() {
   const [passwordDiv, setPasswordDiv] = useState('none')
   const [pointsUpdated, updatePoints] = useState(0)
   const [passwordValue, setPasswordValueState] = useState('')
+  const [usernameValue, setUsernameValueState] = useState('')
 
   const [numberDiv, setNumberDiv] = useState('none')
   const [numberValue, setNumberValueState] = useState()
@@ -109,6 +110,10 @@ export default function Home() {
       alert('Please contact website admin for assistance')
     }
   }
+
+  function setUsernameValue(e) {
+    setUsernameValueState(e)
+  }
   
   function setPasswordValue(e) {
     setPasswordValueState(e)
@@ -164,7 +169,10 @@ export default function Home() {
       </main>
 
       {passwordDiv !== 'none' ? <div style={{display: passwordDiv}} className={styles.modal}>
-        <input autoFocus type="password" placeholder={'Enter Password'} onChange={(e) => setPasswordValue(e.target.value)} value={passwordValue} disabled={passwordIsDisabled} />
+        <form action="/" className={styles.modal}>
+          <input autoFocus type="text" placeholder={'Enter Username'} onChange={(e) => setUsernameValue(e.target.value)} value={usernameValue} disabled={passwordIsDisabled} />
+          <input type="password" placeholder={'Enter Password'} onChange={(e) => setPasswordValue(e.target.value)} value={passwordValue} disabled={passwordIsDisabled} />
+        </form>
       </div> : null}
 
       {numberDiv !== 'none' ? <div style={{display: numberDiv}} className={styles.modal}>
